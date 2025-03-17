@@ -86,7 +86,7 @@
     });
 
 
-    // MODIFIER UN ROLE
+    // MODIFIER UN SERVICE
     $(document).on("click", "#edit-role", function() {
         const name = $(this).data('name');
         $('#name').val(name);

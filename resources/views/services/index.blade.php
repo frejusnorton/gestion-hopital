@@ -40,7 +40,7 @@
                                 <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span
                                         class="path1"></span><span class="path2"></span></i>
                                          <input type="text"
-                                    data-kt-user-table-filter="search" id="search" class="form-control form-control-solid w-250px ps-13 filter"
+                                    data-kt-user-table-filter="search" name="search" id="search" class="form-control form-control-solid w-250px ps-13 filter"
                                     placeholder="Rechercher un service">
                             </div>
                             <!--end::Search-->
@@ -106,7 +106,7 @@
                                         <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                             <!--begin::Form-->
                                             <form id="export_role" class="form fv-plugins-bootstrap5 fv-plugins-framework"
-                                                action="{{route('roles.export')}}">
+                                                action="{{route('service.export')}}">
                                                 @csrf
                                                 <div class="fv-row mb-10 fv-plugins-icon-container">
                                                     <!--begin::Label-->

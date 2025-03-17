@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('services', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom');
+            $table->uuid('id')->primary(); 
+            $table->string('nom')->unique();
+            $table->string('statut')->default(true); ;
             $table->timestamps();
         });
     }
