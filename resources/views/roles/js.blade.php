@@ -1,5 +1,5 @@
 <script>
-    $('.filter').on('keyup', function(e) {
+    $('.filter').on('keyup', function (e) {
         var search = $('#search').val();
         var url = "{{ route('roles.index') }}";
 
@@ -18,7 +18,7 @@
                 'search': search,
             },
             type: 'GET',
-            success: function(data) {
+            success: function (data) {
                 $("div#datapart").html(data);
                 $('[data-bs-toggle="modal"]').tooltip();
             }
@@ -26,8 +26,8 @@
     });
 
     // AJOUT D'UN ROLE
-    $(document).ready(function() {
-        $("#ajout_role").submit(function(event) {
+    $(document).ready(function () {
+        $("#kt_modal_add_role_form").submit(function (event) {
             console.log('soumis');
             event.preventDefault();
 
@@ -44,7 +44,7 @@
                 url: form.attr("action"),
                 type: "POST",
                 data: formData,
-                success: function(response) {
+                success: function (response) {
                     Swal.fire({
                         icon: "success",
                         title: "Succès",
@@ -56,7 +56,7 @@
                         }
                     });
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     console.log(xhr);
                     if (xhr.status === 500) {
                         Swal.fire({
@@ -77,7 +77,7 @@
                         });
                     }
                 },
-                complete: function() {
+                complete: function () {
                     loginBtn.prop("disabled", false);
                     spinner.addClass("d-none");
                 }
@@ -86,24 +86,23 @@
     });
 
     // MODIFIER UN ROLE
-    $(document).on("click", "#edit-role", function() {
+    $(document).on("click", "#edit-role", function () {
         const name = $(this).data('name');
         $('#name').val(name);
         $('.modaltitle').text(`Modifier le rôle ${name}`);
         $('#edit_role_form').attr('action', $(this).data('url'));
     });
 
-    $(document).ready(function() {
-        $("#edit_role_form").submit(function(event) {
-            console.log('soumis');
+    $(document).ready(function () {
+        $("#edit_role_form").submit(function (event) {
             event.preventDefault();
 
             let form = $(this);
             let formData = form.serialize();
-            let loginBtn = $("#loginBtn");
+            let editBtn = $("#editBtn");
             let spinner = $("#loading-spinner");
 
-            loginBtn.prop("disabled", true);
+            editBtn.prop("disabled", true);
             spinner.removeClass("d-none");
 
             $(".text-danger").text("");
@@ -118,7 +117,8 @@
                 url: form.attr("action"),
                 type: "POST",
                 data: formData,
-                success: function(response) {
+                success: function (response) {
+                    $('#edit_role').modal('hide');
                     Swal.fire({
                         icon: "success",
                         title: "Succès",
@@ -126,11 +126,12 @@
                         confirmButtonColor: "#28a745",
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.reload();
+                      
+                            window.location.reload(); 
                         }
                     });
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     console.log(xhr);
                     if (xhr.status === 500) {
                         Swal.fire({
@@ -151,16 +152,18 @@
                         });
                     }
                 },
-                complete: function() {
-                    loginBtn.prop("disabled", false);
+                complete: function () {
+                    editBtn.prop("disabled", false);
                     spinner.addClass("d-none");
                 }
             });
         });
     });
 
+
+
     // SUPPRIMER ROLE
-    $(document).on('click', '#supprimer_role', function() {
+    $(document).on('click', '#supprimer_role', function () {
         const url = $(this).data('url');
         Swal.fire({
             title: "Voulez-vous vraiment supprimer ce rôle ?",
@@ -179,7 +182,7 @@
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
                     },
-                    success: function(response) {
+                    success: function (response) {
                         Swal.fire(
                             'Succès !',
                             response.message,
@@ -188,7 +191,7 @@
                             location.reload();
                         });
                     },
-                    error: function() {
+                    error: function () {
                         Swal.fire(
                             'Erreur',
                             'Une erreur s\'est produite. Veuillez réessayer.',
@@ -201,16 +204,16 @@
     });
 
     //PERMISSION
-    $(document).ready(function() {
+    $(document).ready(function () {
         let role_id = null;
-        $(document).on("click", "#permission_role", function() {
+        $(document).on("click", "#permission_role", function () {
             role_id = $(this).data("id");
             $("#role_id").val(role_id);
             let name = $(this).data("name");
             $(".modaltitle").text(`Listes des permission pour le rôle ${name}`);
         });
 
-        $("#permission_form").submit(function(event) {
+        $("#permission_form").submit(function (event) {
             console.log(role_id)
             event.preventDefault();
 
@@ -227,7 +230,7 @@
                 url: form.attr("action"),
                 type: "POST",
                 data: formData,
-                success: function(response) {
+                success: function (response) {
                     Swal.fire({
                         icon: "success",
                         title: "Succès",
@@ -239,7 +242,7 @@
                         }
                     });
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     console.log(xhr);
                     if (xhr.status === 500) {
                         Swal.fire({
@@ -263,7 +266,7 @@
                         });
                     }
                 },
-                complete: function() {
+                complete: function () {
                     loginBtn.prop("disabled", false);
                     spinner.addClass("d-none");
                 }

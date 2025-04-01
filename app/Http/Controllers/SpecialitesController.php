@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\SpecialiteMedecin;
+use App\Models\Specialites;
 
-class SpecialitesMedecin extends Controller
+class SpecialitesController extends Controller
 {
     public function index(Request $request)
     {
-        $specialite_medecin = SpecialiteMedecin::paginate(10);
+        $specialite_medecin = Specialites::paginate(10);
 
         return view('specialite-medecin.index', [
             'specialites_medecins' =>  $specialite_medecin
@@ -29,7 +29,7 @@ class SpecialitesMedecin extends Controller
 
 
         $specialiteName = strtoupper($request->nom);
-        $existingRole = SpecialiteMedecin::whereRaw('LOWER(name) = ?', [strtolower($specialiteName)])->exists();
+        $existingRole = Specialites::whereRaw('LOWER(name) = ?', [strtolower($specialiteName)])->exists();
         if ($existingRole) {
             if ($existingRole) {
                 return response()->json([
@@ -39,7 +39,7 @@ class SpecialitesMedecin extends Controller
                 ], 422);
             }
         }
-        $role = SpecialiteMedecin::create([
+        $role = Specialites::create([
             'nom' =>   $specialiteName,
         ]);
 

@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('specialite_medecins', function (Blueprint $table) {
+        Schema::create('medecins', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string(column: 'nom')->unique();
-            $table->string(column: 'statut')->default(true);;
+            $table->string('nom');
+            $table->string('prenom');
+            $table->string('email');
+            $table->string('telephone');
+            $table->string('sexe');
+            $table->foreignUuid('specialites_id');
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('specialite_medecins');
+        Schema::dropIfExists('medecins');
     }
 };

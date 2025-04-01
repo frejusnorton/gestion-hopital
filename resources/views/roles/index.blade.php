@@ -1,24 +1,59 @@
 @extends('main.index')
 
 @section('title', 'Listes des roles')
+
 @section('toolbar')
-    <div
-        class="container-fluid py-6 py-lg-0 d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between">
-        <!--begin::Page title-->
-        <div class="page-title d-flex flex-column me-5">
-            <!--begin::Title-->
-            <h1 class="d-flex flex-column text-dark fw-bolder fs-3 mb-0">Tableau de bord - Polyclinique Biosso</h1>
-            <!--end::Title-->
-            <!--begin::Breadcrumb-->
-            <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 pt-1">
-                <!--begin::Item-->
-                <li class="breadcrumb-item text-muted">
-                    <span class="text-muted text-hover-primary">Gestion des rôles</span>
-                </li>
-                <!--end::Item-->
-            </ul>
-            <!--end::Breadcrumb-->
+    <div class="toolbar d-flex align-items-stretch">
+        <!--begin::Toolbar container-->
+        <div
+            class=" container-xxl  py-6 py-lg-0 d-flex flex-column flex-lg-row align-items-lg-stretch justify-content-lg-between">
+
+
+            <!--begin::Page title-->
+            <div class="page-title d-flex justify-content-center flex-column me-5">
+                <!--begin::Title-->
+                <h1 class="d-flex flex-column text-gray-900 fw-bold fs-3 mb-0">
+                    Listes des rôle</h1>
+                <!--end::Title-->
+
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 pt-1">
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item text-muted">
+                        <a href="{{ route('home') }}" class="text-muted text-hover-primary">
+                            Acceuil </a>
+                    </li>
+                    <!--end::Item-->
+
+
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item">
+                        <span class="bullet bg-gray-300 w-5px h-2px"></span>
+                    </li>
+                    <!--end::Item-->
+
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item text-muted">
+                        Polyclinique </li>
+                    <!--end::Item-->
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item">
+                        <span class="bullet bg-gray-300 w-5px h-2px"></span>
+                    </li>
+                    <!--end::Item-->
+
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item text-gray-900"> Listes des permissions
+                    </li>
+                    <!--end::Item-->
+
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page title-->
+
         </div>
+        <!--end::Toolbar container-->
     </div>
 @endsection
 
@@ -58,10 +93,10 @@
                                 </button>
                                 <!--end::Export-->
                                 <!--begin::Add user-->
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#add_role">
                                     <i class="ki-duotone ki-plus fs-2"></i> Ajouter un rôle
-                                </button>
+                                </button> --}}
                                 <!--end::Add user-->
 
 
@@ -218,16 +253,14 @@
                                                             <!--begin::Label-->
                                                             <label
                                                                 class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                                                data-kt-image-input-action="change"
-                                                                data-bs-toggle="tooltip" aria-label="Change avatar"
+                                                                data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                                                aria-label="Change avatar"
                                                                 data-bs-original-title="Change avatar"
                                                                 data-kt-initialized="1">
                                                                 <i class="ki-duotone ki-pencil fs-7"><span
-                                                                        class="path1"></span><span
-                                                                        class="path2"></span></i>
+                                                                        class="path1"></span><span class="path2"></span></i>
                                                                 <!--begin::Inputs-->
-                                                                <input type="file" name="avatar"
-                                                                    accept=".png, .jpg, .jpeg">
+                                                                <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
                                                                 <input type="hidden" name="avatar_remove">
                                                                 <!--end::Inputs-->
                                                             </label>
@@ -236,25 +269,25 @@
                                                             <!--begin::Cancel-->
                                                             <span
                                                                 class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                                                data-kt-image-input-action="cancel"
-                                                                data-bs-toggle="tooltip" aria-label="Cancel avatar"
+                                                                data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                                                aria-label="Cancel avatar"
                                                                 data-bs-original-title="Cancel avatar"
                                                                 data-kt-initialized="1">
                                                                 <i class="ki-duotone ki-cross fs-2"><span
-                                                                        class="path1"></span><span
-                                                                        class="path2"></span></i> </span>
+                                                                        class="path1"></span><span class="path2"></span></i>
+                                                            </span>
                                                             <!--end::Cancel-->
 
                                                             <!--begin::Remove-->
                                                             <span
                                                                 class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                                                data-kt-image-input-action="remove"
-                                                                data-bs-toggle="tooltip" aria-label="Remove avatar"
+                                                                data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                                                aria-label="Remove avatar"
                                                                 data-bs-original-title="Remove avatar"
                                                                 data-kt-initialized="1">
                                                                 <i class="ki-duotone ki-cross fs-2"><span
-                                                                        class="path1"></span><span
-                                                                        class="path2"></span></i> </span>
+                                                                        class="path1"></span><span class="path2"></span></i>
+                                                            </span>
                                                             <!--end::Remove-->
                                                         </div>
                                                         <!--end::Image input-->
@@ -478,6 +511,32 @@
 
                         </div>
                         <!--end::Table-->
+
+                        <!--begin::Add new card-->
+                        <div class="ol-md-4">
+                            <!--begin::Card-->
+                            <div class="card h-md-100">
+                                <!--begin::Card body-->
+                                <div class="card-body d-flex flex-center">
+                                    <!--begin::Button-->
+                                    <button type="button" class="btn btn-clear d-flex flex-column flex-center"
+                                        data-bs-toggle="modal" data-bs-target="#kt_modal_add_role">
+                                        <!--begin::Illustration-->
+                                        <img src="assets/media/illustrations/sketchy-1/4.png" alt=""
+                                            class="mw-100 mh-150px mb-7">
+                                        <!--end::Illustration-->
+
+                                        <!--begin::Label-->
+                                        <div class="fw-bold fs-3 text-gray-600 text-hover-primary">Ajouter un role</div>
+                                        <!--end::Label-->
+                                    </button>
+                                    <!--begin::Button-->
+                                </div>
+                                <!--begin::Card body-->
+                            </div>
+                            <!--begin::Card-->
+                        </div>
+                        <!--begin::Add new card-->
                     </div>
                     <!--end::Card body-->
                 </div>
@@ -493,5 +552,5 @@
 @include('roles.permission')
 
 @section('scripts')
-    @include('roles.js')
+@include('roles.js')
 @endsection

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
-class SpecialiteMedecin extends Model
+class Specialites extends Model
 {
     protected $keyType = 'string';
     public $incrementing = false;
@@ -16,8 +16,8 @@ class SpecialiteMedecin extends Model
     
     protected static function booted()
     {
-        static::creating(function ($specialite_medecins) {
-            $specialite_medecins->id = (string) Str::uuid();
+        static::creating(function ($specialites) {
+            $specialites->id = (string) Str::uuid();
         });
     }
 }

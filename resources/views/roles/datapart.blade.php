@@ -1,72 +1,60 @@
-<table class="table align-middle table-row-dashed fs-6 gy-5 dataTable" id="kt_table_users" style="width: 100%;">
-    <thead>
-        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-            <th class="min-w-125px dt-orderable-asc dt-orderable-desc" data-dt-column="1">
-                <span class="dt-column-title text-primary" role="button">Nom</span>
-                <span class="dt-column-order"></span>
-            </th>
-            <th class="min-w-125px dt-orderable-asc dt-orderable-desc" data-dt-column="2">
-                <span class="dt-column-title text-primary" role="button">Date de création</span>
-                <span class="dt-column-order"></span>
-            </th>
-            <th class="min-w-125px dt-orderable-asc dt-orderable-desc text-end" data-dt-column="3">
-                <span class="dt-column-title text-primary" role="button">Action</span>
-                <span class="dt-column-order"></span>
-            </th>
-        </tr>
-    </thead>
-    <tbody class="text-gray-600 fw-semibold">
-        @forelse ($roles as $role)
-            <tr>
-                <td class="align-middle ">
-                    {{ $role->name }}
-                </td>
-                <td class="align-middle">
-                    {{ $role->created_at->format('d/m/Y à H:i') }}
-                </td>
-                <td class="text-end">
-                    <div class="dropdown">
-                        <a class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle" href="#"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Actions
-                        </a>
-                        <ul class="dropdown-menu ">
-                            <!-- Modifier -->
-                            <li class="mb-2">
-                                <a id="edit-role" href="javascript:void(0);" class="menu-link px-3 text-warning"
-                                    data-bs-toggle="modal" data-bs-target="#edit_role" data-name="{{ $role->name }}"
-                                    data-url="{{ route('roles.edit', ['role' => $role->id]) }}">
-                                    <i class="bi bi-pencil  text-warning"></i> Modifier
-                                </a>
-                            </li>
-                            <!-- Désactiver -->
-                            <li class="mb-2">
-                                <a id="supprimer_role" href="javascript:void(0);" class="menu-link px-3 text-danger"
-                                    data-url="{{ route('roles.delete', ['role' => $role->id]) }}">
-                                    <i class="bi bi-trash text-danger"></i> Supprimer
-                                </a>
-                            </li>
-                            <li>
-                                <a id="permission_role" href="javascript:void(0);" data-bs-toggle="modal"
-                                    data-bs-target="#permission" class="menu-link px-3 " data-url="#"
-                                    data-statut="#" data-id ="{{ $role->id }}" data-name={{ $role->name }}
-                                    data-url ="{{ route('roles.delete', ['role' => $role->id]) }}">
-                                    <i class="bi bi-key text-primary"></i> Permission
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="3" class="text-center">Aucun rôle disponible</td>
-            </tr>
-        @endforelse
-    </tbody>
-</table>
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class=" container-xxl ">
+        <!--begin::Row-->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-5 g-xl-9">
+            <!--begin::Col-->
+            @foreach ($roles as $role)
+                <div class="col-md-4">
+                    <div class="card card-flush h-md-100">
+                        <!--begin::Card header-->
+                        <div class="card-header">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <h2> {{ $role->name }}</h2>
+                            </div>
+                            <!--end::Card title-->
+                        </div>
+                        <!--end::Card header-->
 
-<!-- Pagination -->
-<div class="mt-3">
-    {{ $roles->links('pagination.custom') }}
+                        <!--begin::Card body-->
+                        <div class="card-body pt-1">
+                            <!--begin::Users-->
+                            <div class="fw-bold text-gray-600 mb-5">Nombres total d'utilisateur pour ce rôle
+                                {{ $rolesWithUserCount[$role->id]->users_count ?? 0 }}</div>
+                            <!--end::Users-->
+                            <!--begin::Permissions-->
+                            <div class="d-flex flex-column text-gray-600">
+                                @forelse ($role->permissions as $permission)
+                                    <div class="d-flex align-items-center py-2">
+                                        <span class="bullet bg-primary me-3"></span> {{ $permission->name }}
+                                    </div>
+                                @empty
+                                    <div class="text-muted">Aucune permission assignée</div>
+                                @endforelse
+                            </div>
+                            <!--end::Permissions-->
+                        </div>
+                        <div class="card-footer flex-wrap pt-0">
+
+                            <a href="{{ route('roles.details', ['role' => $role->id]) }}"
+                                class="btn btn-light btn-active-primary my-1 me-2">Voir le rôle</a>
+
+                            <button type="button" class="btn btn-light btn-active-light-primary my-1" data-bs-toggle="modal"
+                                data-bs-target="#kt_modal_update_role">Modifier le rôle</button>
+                        </div>
+                    </div>
+
+                </div>
+                <!--end::Col-->
+            @endforeach
+
+        </div>
+        <!--end::Row-->
+
+        <!--begin::Modals-->
+
+
+    </div>
+    <!--end::Container-->
 </div>

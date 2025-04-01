@@ -6,24 +6,31 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MedecinController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\SpecialitesMedecin;
 use App\Http\Controllers\InfirmierController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\SpecialitesController;
 
-Route::middleware(['auth'])->group(function () {});
+Route::middleware(['auth'])->group(function () {
+
+    
+});
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //  ROLES 
 Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
 Route::post('roles', [RoleController::class, 'create'])->name('roles.create');
-Route::post('roles/{role}/supprimer', [RoleController::class, 'delete'])->name('roles.delete');
-Route::post('roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+Route::post('roles/supprimer/{role}', [RoleController::class, 'delete'])->name('roles.delete');
+Route::post('roles/edit/{role}', [RoleController::class, 'edit'])->name('roles.edit');
 Route::get('roles/export', [RoleController::class, 'export'])->name('roles.export');
+Route::get('roles/details/{role}', [RoleController::class, 'details'])->name('roles.details');
 
-//PERMISSION POUR ROLES
-Route::get('permissions', [PermissionController::class, 'index'])->name('permission.index');
+//PERMISSION
+Route::get('permission', [PermissionController::class, 'index'])->name('permission.index');
 Route::post('permission', [PermissionController::class, 'create'])->name('permission.create');
+Route::post('permission/edit/{permission}', [PermissionController::class, 'update'])->name('permission.edit');
+Route::post('permission/delete/{permission}', [PermissionController::class, 'delete'])->name('permission.delete');
 
 
 //  MEDECIN 
@@ -33,12 +40,12 @@ Route::post('medecin/{medecin}/supprimer', [MedecinController::class, 'delete'])
 Route::post('medecin/{medecin}/edit', [MedecinController::class, 'edit'])->name('medecin.edit');
 Route::get('medecin/export', [MedecinController::class, 'export'])->name('medecin.export');
 
-//  SPECIALITE MEDECIN 
-Route::get('specialite-medecin', [SpecialitesMedecin::class, 'index'])->name('specialite-medecin.index');
-Route::post('specialite-medecin', [SpecialitesMedecin::class, 'create'])->name('specialite-medecin.create');
-Route::post('specialite-medecin/{specialite}/supprimer', [SpecialitesMedecin::class, 'delete'])->name('specialite-medecin.delete');
-Route::post('specialite-medecin/{specialite}/edit', [SpecialitesMedecin::class, 'edit'])->name('specialite-medecin.edit');
-Route::get('specialite-medecin/export', [SpecialitesMedecin::class, 'export'])->name('specialite-medecin.export');
+//  SPECIALITE 
+Route::get('specialite-medecin', [SpecialitesController::class, 'index'])->name('specialite-medecin.index');
+Route::post('specialite-medecin', [SpecialitesController::class, 'create'])->name('specialite-medecin.create');
+Route::post('specialite-medecin/{specialite}/supprimer', [SpecialitesController::class, 'delete'])->name('specialite-medecin.delete');
+Route::post('specialite-medecin/{specialite}/edit', [SpecialitesController::class, 'edit'])->name('specialite-medecin.edit');
+Route::get('specialite-medecin/export', [SpecialitesController::class, 'export'])->name('specialite-medecin.export');
 
 // LISTES DES INFIRMIERS 
 Route::get('infirmier', [InfirmierController::class, 'index'])->name('infirmier.index');
@@ -53,6 +60,9 @@ Route::post('service', [ServiceController::class, 'create'])->name('service.crea
 Route::post('service/{service}/supprimer', [ServiceController::class, 'delete'])->name('service.delete');
 Route::post('service/{service}/edit', [ServiceController::class, 'edit'])->name('service.edit');
 Route::get('service/export', [ServiceController::class, 'export'])->name('service.export');
+
+//PATIENTS
+Route::get('patients', [PatientController::class, 'index'])->name('patient.index');
 
 
 // Route pour la connexion

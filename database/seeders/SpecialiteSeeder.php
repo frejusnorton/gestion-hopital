@@ -1,10 +1,12 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class SpecialitesTableSeeder extends Seeder
+class SpecialiteSeeder extends Seeder
 {
     public function run()
     {

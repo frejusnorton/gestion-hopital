@@ -1,4 +1,4 @@
-<div class="modal fade" id="add_permission" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="kt_modal_add_permission" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="add_roleLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-500px">
         <div class="modal-content">
@@ -8,28 +8,46 @@
             </div>
 
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                <form id="ajout_role" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="{{route('permission.create')}}"
-                    method="POST">
+                <!--begin::Form-->
+                <form id="kt_modal_add_permission_form" class="form fv-plugins-bootstrap5 fv-plugins-framework"
+                    action="{{ route('permission.create') }}" method="post">
                     @csrf
-                    <div class="d-flex flex-column scroll-y me-n7 pe-7" id="kt_modal_add_user_scroll"
-                        data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}"
-                        data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header"
-                        data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
+                    <!--begin::Input group-->
+                    <div class="fv-row mb-7 fv-plugins-icon-container">
+                        <!--begin::Label-->
+                        <label class="fs-6 fw-semibold form-label mb-2">
+                            <span class="required">Nom</span>
 
-                        <div class="fv-row mb-7 fv-plugins-icon-container">
-                            <label class="required fw-semibold fs-6 mb-2">Nom </label>
-                            <input type="text" name="name" class="form-control mb-3 mb-lg-0" id="nom">
+                            <span class="ms-2" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true"
+                                data-bs-content="Permission names is required to be unique." data-kt-initialized="1">
+                                <i class="ki-duotone ki-information fs-7"><span class="path1"></span><span
+                                        class="path2"></span><span class="path3"></span></i> </span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input class="form-control form-control-solid" placeholder="Entrer le nom"
+                            name="name">
+                        <!--end::Input-->
+                        <div
+                            class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                         </div>
                     </div>
-                   
-                    <div class="">
-                        <button type="submit" class="btn btn-lg btn-primary  mb-5" id="loginBtn">
-                            <span class="indicator-label">Soumettre</span>
-                            <span class="spinner-border spinner-border-sm align-middle ms-2 d-none"
-                                id="loading-spinner"></span>
+
+                    <!--begin::Actions-->
+                    <div class="pt-15">
+
+                        <button type="submit" class="btn btn-primary btn-sm" >
+                            <span class="indicator-label">
+                                Enregistrer
+                            </span>
+                            <span class="indicator-progress">
+                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
                         </button>
                     </div>
+                    <!--end::Actions-->
                 </form>
+                <!--end::Form-->
             </div>
         </div>
     </div>
