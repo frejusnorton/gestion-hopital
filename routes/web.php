@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -25,6 +26,13 @@ Route::post('roles/supprimer/{role}', [RoleController::class, 'delete'])->name('
 Route::post('roles/edit/{role}', [RoleController::class, 'edit'])->name('roles.edit');
 Route::get('roles/export', [RoleController::class, 'export'])->name('roles.export');
 Route::get('roles/details/{role}', [RoleController::class, 'details'])->name('roles.details');
+
+//ADMIN
+Route::get('admin', [AdminController::class, 'index'])->name('admin.index');
+Route::post('admin', [AdminController::class, 'create'])->name('admin.create');
+Route::post('admin/{administrateur}/supprimer', [AdminController::class, 'delete'])->name('admin.delete');
+Route::post('admin/{administrateur}/edit', [AdminController::class, 'edit'])->name('admin.edit');
+Route::get('admin/export', [AdminController::class, 'export'])->name('admin.export');
 
 //PERMISSION
 Route::get('permission', [PermissionController::class, 'index'])->name('permission.index');

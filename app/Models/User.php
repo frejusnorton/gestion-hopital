@@ -60,4 +60,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+  
+    public function specialite()
+    {
+        return $this->belongsTo(Specialite::class, 'specialite_id');
+    }
 }

@@ -1,7 +1,7 @@
 <script>
-    $('.filter').on('keyup', function (e) {
+    $('.filter').on('keyup', function(e) {
         var search = $('#search').val();
-        var url = "{{ route('permission.index') }}";
+        var url = "{{ route('service.index') }}";
 
         $("div#datapart").html('<div class="col-xs-12 text-center" style="padding-top: 3em;">' +
             '<i class="fa fa-spin fa-spinner" style="color: lightgrey; font-size: 4em;"></i>' +
@@ -18,16 +18,16 @@
                 'search': search,
             },
             type: 'GET',
-            success: function (data) {
+            success: function(data) {
                 $("div#datapart").html(data);
                 $('[data-bs-toggle="modal"]').tooltip();
             }
         });
     });
 
-    // AJOUT D'UNE PERMISSION
-    $(document).ready(function () {
-        $("#kt_modal_add_permission_form").submit(function (event) {
+    // AJOUT D'UN SERVICE
+    $(document).ready(function() {
+        $("#ajout_role").submit(function(event) {
             console.log('soumis');
             event.preventDefault();
 
@@ -44,8 +44,7 @@
                 url: form.attr("action"),
                 type: "POST",
                 data: formData,
-                success: function (response) {
-                    $('#kt_modal_add_permission').modal('hide');
+                success: function(response) {
                     Swal.fire({
                         icon: "success",
                         title: "Succès",
@@ -57,7 +56,7 @@
                         }
                     });
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr);
                     if (xhr.status === 500) {
                         Swal.fire({
@@ -78,7 +77,7 @@
                         });
                     }
                 },
-                complete: function () {
+                complete: function() {
                     loginBtn.prop("disabled", false);
                     spinner.addClass("d-none");
                 }
@@ -86,15 +85,17 @@
         });
     });
 
-    // MODIFIER UNE PERMISSIONS
-    $(document).on("click", "#edit_permission", function () {
+
+    // MODIFIER UN SERVICE
+    $(document).on("click", "#edit-role", function() {
         const name = $(this).data('name');
         $('#name').val(name);
-        $('#kt_modal_update_permission_form').attr('action', $(this).data('url'));
+        $('#edit_role_form').attr('action', $(this).data('url'));
     });
 
-    $(document).ready(function () {
-        $("#kt_modal_update_permission_form").submit(function (event) {
+    $(document).ready(function() {
+        $("#edit_role_form").submit(function(event) {
+            console.log('soumis');
             event.preventDefault();
 
             let form = $(this);
@@ -102,21 +103,22 @@
             let loginBtn = $("#loginBtn");
             let spinner = $("#loading-spinner");
 
-
             loginBtn.prop("disabled", true);
             spinner.removeClass("d-none");
+
             $(".text-danger").text("");
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
             $.ajax({
                 url: form.attr("action"),
                 type: "POST",
                 data: formData,
-                success: function (response) {
-                    $("#kt_modal_update_permission").modal("hide");
+                success: function(response) {
                     Swal.fire({
                         icon: "success",
                         title: "Succès",
@@ -128,7 +130,7 @@
                         }
                     });
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr);
                     if (xhr.status === 500) {
                         Swal.fire({
@@ -149,7 +151,7 @@
                         });
                     }
                 },
-                complete: function () {
+                complete: function() {
                     loginBtn.prop("disabled", false);
                     spinner.addClass("d-none");
                 }
@@ -157,13 +159,11 @@
         });
     });
 
-    // SUPPRIMER PERMISSION
-    $(document).on('click', '#delete_permission', function () {
+    // SUPPRIMER ROLE
+    $(document).on('click', '#supprimer_role', function() {
         const url = $(this).data('url');
-        console.log(url);
-
         Swal.fire({
-            title: "Voulez-vous vraiment supprimer cette permission ?",
+            title: "Voulez-vous vraiment supprimer ce rôle ?",
             html: "<span style='color: red;'>Cette action est irréversible et vous risquez de perdre vos données.</span>",
             icon: "warning",
             showCancelButton: true,
@@ -179,7 +179,7 @@
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
                     },
-                    success: function (response) {
+                    success: function(response) {
                         Swal.fire(
                             'Succès !',
                             response.message,
@@ -188,7 +188,7 @@
                             location.reload();
                         });
                     },
-                    error: function () {
+                    error: function() {
                         Swal.fire(
                             'Erreur',
                             'Une erreur s\'est produite. Veuillez réessayer.',
@@ -199,6 +199,4 @@
             }
         });
     });
-
-
 </script>

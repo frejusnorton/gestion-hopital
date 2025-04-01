@@ -81,12 +81,27 @@
                                 <!--begin::Permissions-->
                                 <div class="d-flex flex-column text-gray-600">
                                     @forelse ($role->permissions as $permission)
-                                        <div class="d-flex align-items-center py-2">
-                                            <span class="bullet bg-primary me-3"></span> {{ $permission->name }}
-                                        </div>
-                                    @empty
-                                        <div class="text-muted">Aucune permission assignée</div>
-                                    @endforelse
+                               
+                                    <div class="d-flex align-items-center py-2">
+                                        <span class="bullet bg-primary me-3"></span> {{ $permission->name }}
+                                    </div>
+                                    <ul class="ms-3">
+                                        @if ($permission->pivot->can_read)
+                                            <li>Lire</li>
+                                        @endif
+                                        @if ($permission->pivot->can_update)
+                                            <li>Écrire</li>
+                                        @endif
+                                        @if ($permission->pivot->can_create)
+                                            <li>Mettre à jour</li>
+                                        @endif
+                                        @if ($permission->pivot->can_delete)
+                                            <li>Supprimer</li>
+                                        @endif
+                                    </ul>
+                                @empty
+                                    <div class="text-muted">Aucune permission assignée</div>
+                                @endforelse
                                 </div>
                                 <!--end::Permissions-->
                             </div>

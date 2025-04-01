@@ -45,6 +45,7 @@
                 type: "POST",
                 data: formData,
                 success: function (response) {
+                    $('#kt_modal_add_role').modal('hide');
                     Swal.fire({
                         icon: "success",
                         title: "Succès",
@@ -86,10 +87,11 @@
     });
 
     // MODIFIER UN ROLE
-    $(document).on("click", "#edit-role", function () {
+    $(document).on("click", "#deit_role_btn", function () {
         const name = $(this).data('name');
+        console.log($(this).data('permissions'));
+
         $('#name').val(name);
-        $('.modaltitle').text(`Modifier le rôle ${name}`);
         $('#edit_role_form').attr('action', $(this).data('url'));
     });
 
@@ -126,8 +128,8 @@
                         confirmButtonColor: "#28a745",
                     }).then((result) => {
                         if (result.isConfirmed) {
-                      
-                            window.location.reload(); 
+
+                            window.location.reload();
                         }
                     });
                 },

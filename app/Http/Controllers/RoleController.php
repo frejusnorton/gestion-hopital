@@ -39,6 +39,7 @@ class RoleController extends Controller
     {
 
         DB::beginTransaction();
+
         try {
             $customMessages = [
                 'name.required' => 'Le nom est obligatoire.',
@@ -70,11 +71,16 @@ class RoleController extends Controller
             $permissionsToAttach = [];
 
             foreach ($permissions as $permissionName => $actions) {
-                $permission = Permission::firstOrCreate(['name' => $permissionName]);
+                $normalizedPermissionName = strtoupper($permissionName); 
 
+                $permission = Permission::whereRaw('UPPER(name) = ?', [$normalizedPermissionName])->first();
+
+                if (!$permission) {
+                    $permission = Permission::create(['name' => $permissionName]);
+                }
                 $actionsToStore = [
                     'can_read' => isset($actions['read']) ? true : false,
-                    'can_write' => isset($actions['write']) ? true : false,
+                    'can_update' => isset($actions['update']) ? true : false,
                     'can_create' => isset($actions['create']) ? true : false,
                     'can_delete' => isset($actions['delete']) ? true : false,
                 ];
@@ -83,7 +89,7 @@ class RoleController extends Controller
                     'permission_id' => $permission->id,
                     'role_id' => $role->id,
                     'can_read' => $actionsToStore['can_read'],
-                    'can_write' => $actionsToStore['can_write'],
+                    'can_update' => $actionsToStore['can_update'],
                     'can_create' => $actionsToStore['can_create'],
                     'can_delete' => $actionsToStore['can_delete'],
                 ];

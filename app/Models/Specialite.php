@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
-class Specialites extends Model
+class Specialite extends Model
 {
     protected $keyType = 'string';
     public $incrementing = false;
@@ -19,5 +19,10 @@ class Specialites extends Model
         static::creating(function ($specialites) {
             $specialites->id = (string) Str::uuid();
         });
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'specialite_id');
     }
 }

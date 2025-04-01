@@ -20,7 +20,6 @@ class PermissionController extends Controller
     public function create(Request $request)
     {
 
-
         $customMessages = [
             'name.required' => 'Le nom est obligatoire.',
             'name.string' => 'Le nom doit être une chaîne de caractères.',
@@ -37,7 +36,6 @@ class PermissionController extends Controller
 
             $permissionName = strtoupper($validated['name']);
 
-
             $existingPermission = Permission::whereRaw('LOWER(name) = ?', [strtolower($permissionName)])->exists();
             if ($existingPermission) {
                 return response()->json([
@@ -47,7 +45,7 @@ class PermissionController extends Controller
                 ], 422);
             }
 
-            $permission = Permission::create([
+            Permission::create([
                 'id' => Str::uuid(),
                 'name' => $permissionName,
             ]);
