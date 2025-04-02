@@ -549,7 +549,7 @@
 @endsection
 @include('roles.create')
 @include('roles.edit')
-@include('roles.permission')
+
 
 @section('scripts')
 @include('roles.js')

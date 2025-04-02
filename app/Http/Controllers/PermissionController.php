@@ -4,14 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\PermissionCustom;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = Permission::paginate(10);
+        $permissions = Permission::with('roles')->paginate(10);
+        if ($request->ajax()) {
+            $search = $request->input('search', '');
+            $permissions = PermissionCustom::with('roles')->filter($search)->paginate(10);
+            return view('permission.datapart', ['permissions' => $permissions]);
+        }
 
         return view('permission.index', [
             'permissions' => $permissions
@@ -19,7 +25,6 @@ class PermissionController extends Controller
     }
     public function create(Request $request)
     {
-
         $customMessages = [
             'name.required' => 'Le nom est obligatoire.',
             'name.string' => 'Le nom doit être une chaîne de caractères.',

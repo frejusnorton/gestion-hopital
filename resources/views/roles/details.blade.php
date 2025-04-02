@@ -81,27 +81,27 @@
                                 <!--begin::Permissions-->
                                 <div class="d-flex flex-column text-gray-600">
                                     @forelse ($role->permissions as $permission)
-                               
-                                    <div class="d-flex align-items-center py-2">
-                                        <span class="bullet bg-primary me-3"></span> {{ $permission->name }}
-                                    </div>
-                                    <ul class="ms-3">
-                                        @if ($permission->pivot->can_read)
-                                            <li>Lire</li>
-                                        @endif
-                                        @if ($permission->pivot->can_update)
-                                            <li>Écrire</li>
-                                        @endif
-                                        @if ($permission->pivot->can_create)
-                                            <li>Mettre à jour</li>
-                                        @endif
-                                        @if ($permission->pivot->can_delete)
-                                            <li>Supprimer</li>
-                                        @endif
-                                    </ul>
-                                @empty
-                                    <div class="text-muted">Aucune permission assignée</div>
-                                @endforelse
+
+                                        <div class="d-flex align-items-center py-2">
+                                            <span class="bullet bg-primary me-3"></span> {{ $permission->name }}
+                                        </div>
+                                        <ul class="ms-3">
+                                            @if ($permission->pivot->can_read)
+                                                <li>Lire</li>
+                                            @endif
+                                            @if ($permission->pivot->can_update)
+                                                <li>Mettre à jour</li>
+                                            @endif
+                                            @if ($permission->pivot->can_create)
+                                                <li>Créer</li>
+                                            @endif
+                                            @if ($permission->pivot->can_delete)
+                                                <li>Supprimer</li>
+                                            @endif
+                                        </ul>
+                                    @empty
+                                        <div class="text-muted">Aucune permission assignée</div>
+                                    @endforelse
                                 </div>
                                 <!--end::Permissions-->
                             </div>
@@ -721,7 +721,7 @@
                                             class="text-gray-600 fs-6 ms-1">
                                             ({{ $rolesWithUserCount[$role->id]->users_count ?? 0 }}) </span></h2>
                                 </div>
-                              
+
                                 <div class="card-toolbar">
                                     <!--begin::Search-->
                                     <div class="d-flex align-items-center position-relative my-1"
@@ -751,7 +751,7 @@
                                 </div>
                                 <!--end::Card toolbar-->
                             </div>
-                          
+
                             <div class="card-body pt-0">
                                 <!--begin::Table-->
                                 <div id="kt_roles_view_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
@@ -816,14 +816,16 @@
                                                                     {{ $user->email }}
                                                                 </span>
                                                             </div>
-                                                        </td> <td>
+                                                        </td>
+                                                        <td>
 
                                                             <div class="d-flex flex-column">
                                                                 <span class="text-gray-800 text-hover-primary mb-1">
                                                                     {{ $user->email }}
                                                                 </span>
                                                             </div>
-                                                        </td><td>
+                                                        </td>
+                                                        <td>
 
                                                             <div class="d-flex flex-column">
                                                                 <span class="text-gray-800 text-hover-primary mb-1">

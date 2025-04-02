@@ -87,16 +87,38 @@
     });
 
     // MODIFIER UN ROLE
-    $(document).on("click", "#deit_role_btn", function () {
+    $(document).on("click", "#edit_role_btn", function () {
         const name = $(this).data('name');
-        console.log($(this).data('permissions'));
+        const permissions = $(this).data('permissions');
+        console.log(permissions);
+
+        $('input[type="checkbox"]').prop('checked', false);
 
         $('#name').val(name);
-        $('#edit_role_form').attr('action', $(this).data('url'));
+
+        $('#kt_modal_edit_role_form').attr('action', $(this).data('url'));
+
+        if (permissions) {
+            permissions.forEach(permission => {
+                const permName = permission.name.toLowerCase();
+                if (permission.can_read) {
+                    $(`input[name="permissions[${permName}][read]"]`).prop('checked', true);
+                }
+                if (permission.can_update) {
+                    $(`input[name="permissions[${permName}][update]"]`).prop('checked', true);
+                }
+                if (permission.can_create) {
+                    $(`input[name="permissions[${permName}][create]"]`).prop('checked', true);
+                }
+                if (permission.can_delete) {
+                    $(`input[name="permissions[${permName}][delete]"]`).prop('checked', true);
+                }
+            });
+        }
     });
 
     $(document).ready(function () {
-        $("#edit_role_form").submit(function (event) {
+        $("#kt_modal_edit_role_form").submit(function (event) {
             event.preventDefault();
 
             let form = $(this);
@@ -114,13 +136,12 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
             $.ajax({
                 url: form.attr("action"),
                 type: "POST",
                 data: formData,
                 success: function (response) {
-                    $('#edit_role').modal('hide');
+                    $('#kt_modal_edit_role').modal('hide');
                     Swal.fire({
                         icon: "success",
                         title: "Succès",
@@ -128,7 +149,6 @@
                         confirmButtonColor: "#28a745",
                     }).then((result) => {
                         if (result.isConfirmed) {
-
                             window.location.reload();
                         }
                     });
@@ -145,12 +165,16 @@
                     }
 
                     let errors = xhr.responseJSON?.errors;
-                    if (errors && errors.name) {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Erreur ",
-                            text: errors.name[0],
-                            confirmButtonColor: "#d33"
+                    if (errors) {
+                        Object.keys(errors).forEach((key) => {
+                            errors[key].forEach((errorMessage) => {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Erreur",
+                                    text: errorMessage,
+                                    confirmButtonColor: "#d33"
+                                });
+                            });
                         });
                     }
                 },
@@ -165,8 +189,9 @@
 
 
     // SUPPRIMER ROLE
-    $(document).on('click', '#supprimer_role', function () {
+    $(document).on('click', '#delete_role_btn', function () {
         const url = $(this).data('url');
+
         Swal.fire({
             title: "Voulez-vous vraiment supprimer ce rôle ?",
             html: "<span style='color: red;'>Cette action est irréversible et vous risquez de perdre vos données.</span>",

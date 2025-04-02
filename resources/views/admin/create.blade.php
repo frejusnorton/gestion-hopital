@@ -21,7 +21,7 @@
             <!--begin::Modal body-->
             <div class="modal-body px-5 my-7">
                 <!--begin::Form-->
-                <form id="kt_modal_add_admin_form" method="post" class="form fv-plugins-bootstrap5 fv-plugins-framework"
+                <form id="kt_modal_add_admin_form" method="post" action="{{ 'admin.create' }}"  class="form fv-plugins-bootstrap5 fv-plugins-framework"
                     enctype="multipart/form-data">
                     @csrf
                     <!--begin::Scroll-->
@@ -168,9 +168,8 @@
                                     <input class="form-check-input me-3" name="user_role" type="radio" value="0"
                                         id="kt_modal_update_role_option_0" checked="checked">
                                     <label class="form-check-label" for="kt_modal_update_role_option_0">
-                                        <div class="fw-bold text-gray-800">Administrator</div>
-                                        <div class="text-gray-600">Best for business owners and
-                                            company administrators</div>
+                                        <div class="fw-bold text-gray-800">Administrateur</div>
+                                        
                                     </label>
                                 </div>
                             </div>

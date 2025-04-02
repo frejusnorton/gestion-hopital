@@ -68,13 +68,18 @@
                         });
                     }
 
+                   
                     let errors = xhr.responseJSON?.errors;
-                    if (errors && errors.name) {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Erreur ",
-                            text: errors.name[0],
-                            confirmButtonColor: "#d33"
+                    if (errors) {
+                        Object.keys(errors).forEach((key) => {
+                            errors[key].forEach((errorMessage) => {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Erreur",
+                                    text: errorMessage,
+                                    confirmButtonColor: "#d33"
+                                });
+                            });
                         });
                     }
                 },

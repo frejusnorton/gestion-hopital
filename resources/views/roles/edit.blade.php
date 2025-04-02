@@ -32,7 +32,7 @@ aria-labelledby="add_roleLabel" aria-hidden="true">
                             </label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input id="name" class="form-control form-control-solid" placeholder="Enter a role name"
+                            <input id="name" class="form-control form-control-solid" placeholder="Enter le nom"
                                 name="name">
                             <!--end::Input-->
                             <div
@@ -58,9 +58,8 @@ aria-labelledby="add_roleLabel" aria-hidden="true">
                                             <td class="text-gray-800 text-uppercase">
                                                 {{ $permission->name }}
                                             </td>
-
                                             <!-- Actions -->
-                                            @foreach (['read', 'write', 'create', 'delete'] as $action)
+                                            @foreach (['read', 'update', 'create', 'delete'] as $action)
                                                 <td>
                                                     <label class="form-check form-check-sm form-check-custom form-check-solid">
                                                         <input class="form-check-input" type="checkbox"

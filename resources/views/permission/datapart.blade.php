@@ -32,25 +32,29 @@
             <tr>
                 <td>{{ $permission->name }}</td>
                 <td>
-                    <span class="badge badge-light-primary fs-7 m-1">
-                        {{ $permission->assigned_to ?? 'Non renseigné' }}
-                    </span>
+                    @if ($permission->roles->isNotEmpty())
+                        @foreach ($permission->roles as $role)
+                            <span class="badge badge-light-primary fs-7 m-1">
+                                {{ $role->name }}
+                            </span>
+                        @endforeach
+                    @else
+                        <span class="badge badge-light-secondary fs-7 m-1">Non renseigné</span>
+                    @endif
                 </td>
                 <td data-order="{{ $permission->created_at }}">
                     {{ \Carbon\Carbon::parse($permission->created_at)->locale('fr')->isoFormat('D MMM YYYY, HH:mm') }}
                 </td>
-                <td data-order="{{ $permission->update_at }}">
-                    {{ \Carbon\Carbon::parse($permission->update_at)->locale('fr')->isoFormat('D MMM YYYY, HH:mm') }}
+                <td data-order="{{ $permission->updated_at }}">
+                    {{ \Carbon\Carbon::parse($permission->updated_at)->locale('fr')->isoFormat('D MMM YYYY, HH:mm') }}
                 </td>
                 <td class="text-center">
-
                     <button id="edit_permission" class="btn btn-icon btn-active-light-primary w-30px h-30px me-3"
                         data-bs-toggle="modal" data-bs-target="#kt_modal_update_permission"
                         data-name="{{ $permission->name}}"
                         data-url="{{ route('permission.edit', ['permission' => $permission->id]) }}">
                         <i class="bi bi-pencil fs-3 text-warning"></i>
                     </button>
-
 
                     <button id="delete_permission" class="btn btn-icon btn-active-light-primary w-30px h-30px"
                         data-url="{{ route('permission.delete', ['permission' => $permission->id]) }}">

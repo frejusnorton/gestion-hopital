@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Validation\ValidationException;
 
 class RoleController extends Controller
 {
@@ -37,9 +38,7 @@ class RoleController extends Controller
     }
     public function create(Request $request)
     {
-
         DB::beginTransaction();
-
         try {
             $customMessages = [
                 'name.required' => 'Le nom est obligatoire.',
@@ -71,8 +70,7 @@ class RoleController extends Controller
             $permissionsToAttach = [];
 
             foreach ($permissions as $permissionName => $actions) {
-                $normalizedPermissionName = strtoupper($permissionName); 
-
+                $normalizedPermissionName = strtoupper($permissionName);
                 $permission = Permission::whereRaw('UPPER(name) = ?', [$normalizedPermissionName])->first();
 
                 if (!$permission) {
@@ -97,45 +95,99 @@ class RoleController extends Controller
             foreach ($permissionsToAttach as $data) {
                 DB::table('role_has_permissions')->insert($data);
             }
-
             DB::commit();
             return response()->json([
                 'message' => 'Rôle créé avec succès avec ses permissions.',
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Erreur lors de la création du rôle : ' . $e->getMessage(), [
-                'stack' => $e->getTraceAsString(),
-                'request' => $request->all(),
-            ]);
-
             return response()->json([
-                'error' => 'Une erreur est survenue lors de la création du rôle.',
+                'message' => 'Une erreur est survenue lors de la mise à jour du rôle.',
             ], 500);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erreur de validation',
+                'errors' => $e->errors(),
+            ], 422);
         }
     }
 
 
     public function edit(Request $request, Role $role)
     {
-        $customMessages = [
-            'name.required' => 'Le nom est obligatoire.',
-            'name.string' => 'Le nom doit être une chaîne de caractères.',
-            'name.max' => 'Le nom ne peut pas dépasser 255 caractères.',
-            'name.unique' => 'Ce rôle existe déjà.',
-        ];
+        DB::beginTransaction();
+        try {
+            $customMessages = [
+                'name.required' => 'Le nom est obligatoire.',
+                'name.string' => 'Le nom doit être une chaîne de caractères.',
+                'name.max' => 'Le nom ne peut pas dépasser 255 caractères.',
+                'name.unique' => 'Ce rôle existe déjà.',
+                'permissions.required' => 'Vous devez choisir les permissions du rôle',
+            ];
 
-        $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
-        ], $customMessages);
+            $validated = $request->validate([
+                'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+                'permissions' => 'required|array',
+            ], $customMessages);
 
-        $role->name = strtoupper($request->name);
-        $role->save();
+            $roleName = strtoupper($request->name);
 
-        return response()->json([
-            'message' => 'Rôle mis à jour avec succès.',
-        ], 200);
+            if (Role::whereRaw('LOWER(name) = ?', [strtolower($roleName)])
+                ->where('id', '!=', $role->id)
+                ->exists()
+            ) {
+                return response()->json([
+                    'errors' => ['name' => ['Ce rôle existe déjà.']],
+                ], 422);
+            }
+
+            $role->update(['name' => $roleName]);
+            DB::table('role_has_permissions')->where('role_id', $role->id)->delete();
+
+            // Gestion des nouvelles permissions
+            $permissions = $request->input('permissions');
+            $permissionsToAttach = [];
+
+            foreach ($permissions as $permissionName => $actions) {
+                $normalizedPermissionName = strtoupper($permissionName);
+                $permission = Permission::whereRaw('UPPER(name) = ?', [$normalizedPermissionName])->first();
+
+                if (!$permission) {
+                    $permission = Permission::create(['name' => $permissionName]);
+                }
+
+                $permissionsToAttach[] = [
+                    'permission_id' => $permission->id,
+                    'role_id' => $role->id,
+                    'can_read' => isset($actions['read']) ? true : false,
+                    'can_update' => isset($actions['update']) ? true : false,
+                    'can_create' => isset($actions['create']) ? true : false,
+                    'can_delete' => isset($actions['delete']) ? true : false,
+                ];
+            }
+
+            DB::table('role_has_permissions')->insert($permissionsToAttach);
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Rôle mis à jour avec succès avec ses permissions.',
+            ], 200);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erreur de validation',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Une erreur est survenue lors de la mise à jour du rôle.',
+            ], 500);
+        }
     }
+
+
 
     public function delete(Role $role)
     {
@@ -154,61 +206,7 @@ class RoleController extends Controller
         ]);
     }
 
-    //PERMISSIONS
-    // public function permission(Role $role)
-    // {
-    //     $permissions = $role->permissions()->paginate(10);
-    //     return view('roles.permission.datapart', [
-    //         'permissions' => $permissions,
-    //     ]);
-    // }
-    // public function ajouterPermission(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'role_id' => 'required|integer|exists:roles,id',
-    //     ],[
-    //         'name.required' => 'La permission est obligatoire.',
-    //         'name.max' => 'Le champ permission ne peut pas dépasser 255 caractères.',
-    //         'role_id.required' => 'Le rôle est obligatoire.',
-    //         'role_id.exists' => 'Le rôle sélectionné est invalide.',
-    //     ]);
-
-    //     try {
-    //         $role = Role::findOrFail($validated['role_id']);
-
-    //         $permission = Permission::where('name', $validated['name'])->first();
-    //         if (!$permission) {
-    //             return response()->json([
-    //                 'message' => 'Cette permission n\'existe pas. Veuillez l\'ajouter d\'abord.',
-    //                 'success' => false
-    //             ], 400);
-    //         }
-
-    //         if ($role->hasPermissionTo($permission)) {
-    //             return response()->json([
-    //                 'message' => 'Cette permission est déjà attribuée à ce rôle.',
-    //                 'success' => false
-    //             ], 400);
-    //         }
-
-    //         $role->givePermissionTo($permission);
-
-    //         return response()->json([
-    //             'message' => 'Permission ajoutée avec succès !',
-    //             'success' => true,
-    //         ], 200);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'message' => 'Une erreur s\'est produite.',
-    //             'success' => false,
-    //             'error' => $e->getMessage(),
-    //         ], 500);
-    //     }
-    // }
-
-
-    //REPORTING
+   
     public function export(Request $request)
     {
         if ($request->input('format') === 'excel') {
