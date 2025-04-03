@@ -11,6 +11,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\InfirmierController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\SpecialitesController;
 
 Route::middleware(['auth'])->group(function () {
@@ -26,6 +27,13 @@ Route::post('roles/supprimer/{role}', [RoleController::class, 'delete'])->name('
 Route::post('roles/edit/{role}', [RoleController::class, 'edit'])->name('roles.edit');
 Route::get('roles/export', [RoleController::class, 'export'])->name('roles.export');
 Route::get('roles/details/{role}', [RoleController::class, 'details'])->name('roles.details');
+
+//  Professions 
+Route::get('profession', [ProfessionController::class, 'index'])->name('profession.index');
+Route::post('profession', [ProfessionController::class, 'create'])->name('profession.create');
+Route::post('profession/supprimer/{profession}', [ProfessionController::class, 'delete'])->name('profession.delete');
+Route::post('profession/edit/{profession}', [ProfessionController::class, 'update'])->name('profession.edit');
+Route::post('profession/export', [ProfessionController::class, 'export'])->name('profession.export');
 
 //ADMIN
 Route::get('admin', [AdminController::class, 'index'])->name('admin.index');
@@ -65,9 +73,9 @@ Route::get('infirmier/export', [InfirmierController::class, 'export'])->name('in
 // LISTES DES SERVICES 
 Route::get('service', [ServiceController::class, 'index'])->name('service.index');
 Route::post('service', [ServiceController::class, 'create'])->name('service.create');
-Route::post('service/{service}/supprimer', [ServiceController::class, 'delete'])->name('service.delete');
-Route::post('service/{service}/edit', [ServiceController::class, 'edit'])->name('service.edit');
-Route::get('service/export', [ServiceController::class, 'export'])->name('service.export');
+Route::post('service/supprimer/{service}', [ServiceController::class, 'delete'])->name('service.delete');
+Route::post('service/edit/{service}', [ServiceController::class, 'update'])->name('service.edit');
+Route::post('service/export', [ServiceController::class, 'export'])->name('service.export');
 
 //PATIENTS
 Route::get('patients', [PatientController::class, 'index'])->name('patient.index');

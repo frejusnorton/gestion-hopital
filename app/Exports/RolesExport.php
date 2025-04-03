@@ -14,7 +14,7 @@ class RolesExport implements FromCollection, WithHeadings, WithMapping
     */
     public function collection()
     {
-        return Role::select('id', 'name', 'created_at')->get();
+        return Role::select( 'name', 'created_at','updated_at')->get();
     }
 
     /**
@@ -25,6 +25,7 @@ class RolesExport implements FromCollection, WithHeadings, WithMapping
         return [
             'Nom du rôle',
             'Date de création',
+            'Date de dernière MAJ',
         ];
     }
 
@@ -36,6 +37,7 @@ class RolesExport implements FromCollection, WithHeadings, WithMapping
         return [
             $role->name,
             $role->created_at->format('d/m/Y H:i'),
+            $role->updated_at->format('d/m/Y H:i'),
         ];
     }
 }

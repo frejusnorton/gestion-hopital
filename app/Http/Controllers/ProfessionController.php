@@ -2,32 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ServicesExport;
-use Exception;
-use App\Models\Service;
+
+use Barryvdh\DomPDF\Facade as PDF;
+
+use App\Models\Profession;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Exports\ProfessionsExport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Validation\ValidationException;
 
-class ServiceController extends Controller
+
+class ProfessionController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search', '');
-        $query = Service::filter($search);
+        $query = Profession::filter($search);
 
-        $services = $query->paginate(10);
+        $professions = $query->paginate(10);
 
         if ($request->ajax()) {
-            return view('service.datapart', [
-                'services' => $services
+            return view('profession.datapart', [
+                'professions' => $professions
             ]);
         }
 
-        return view('service.index', [
-            'services' => $services
+        return view('profession.index', [
+            'professions' => $professions
         ]);
     }
 
@@ -38,23 +41,23 @@ class ServiceController extends Controller
             'name.required' => 'Le nom est obligatoire.',
             'name.string' => "Le nom n'est pas valide",
             'name.max' => 'Le nom ne peut pas dépasser 255 caractères.',
-            'name.unique' => 'Ce service existe déjà.',
+            'name.unique' => 'Cette profession existe déjà.',
         ];
 
         try {
             $validated = $request->validate([
-                'name' => 'required|string|max:255|unique:services,name',
+                'name' => 'required|string|max:255|unique:professions,name',
             ], $customMessages);
 
-            $serviceName = strtoupper($validated['name']);
+            $professionName = strtoupper($validated['name']);
 
-            Service::create([
+            Profession::create([
                 'id' => Str::uuid(),
-                'name' => $serviceName,
+                'name' => $professionName,
             ]);
 
             return response()->json([
-                'message' => 'Service créée avec succès.',
+                'message' => 'Profession créée avec succès.',
                 'success' => true,
             ], 201);
         } catch (ValidationException $e) {
@@ -63,29 +66,29 @@ class ServiceController extends Controller
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
-            Log::error('Erreur lors de la création du service', [
+            Log::error('Erreur lors de la création de la profession', [
                 'message' => $e->getMessage(),
                 'stack' => $e->getTraceAsString(),
             ]);
 
             return response()->json([
-                'message' => 'Une erreur est survenue lors de la création du service.',
+                'message' => 'Une erreur est survenue lors de la création de la profession.',
                 'success' => false,
             ], 500);
         }
     }
 
-    public function update(Request $request, Service $service)
+    public function update(Request $request, Profession $profession)
     {
         $request->validate([
-            'name' => 'required|string|unique:services,name,' . $service->id,
+            'name' => 'required|string|unique:professions,name,' . $profession->id,
         ], [
             'name.required' => 'Le champ nom est obligatoire.',
             'name.string' => 'Le champ nom doit être une chaîne de caractères.',
             'name.unique' => 'Ce nom de permission existe déjà.',
         ]);
 
-        $service->update(['name' => strtoupper($request->name)]);
+        $profession->update(['name' => strtoupper($request->name)]);
 
         return response()->json([
             'message' => 'Permission mise à jour avec succès.',
@@ -95,10 +98,10 @@ class ServiceController extends Controller
 
 
 
-    public function delete(Service $service)
+    public function delete(Profession $profession)
     {
-        $service->delete();
-        return response()->json(['message' => 'Service supprimé avec succès.'], 200);
+        $profession->delete();
+        return response()->json(['message' => 'Profession supprimé avec succès.'], 200);
     }
 
 
@@ -107,14 +110,14 @@ class ServiceController extends Controller
         $format = $request->input('format');
 
         if ($format === 'excel') {
-            return Excel::download(new ServicesExport, 'services.xlsx');
+            return Excel::download(new ProfessionsExport, 'professions.xlsx');
         }
 
         if ($request->input('format') === 'pdf') {
-            $services = Service::all();
+            $professions = Profession::all();
 
-            $pdf = app('dompdf.wrapper')->loadView('service.export.pdf', ['services' => $services]);
-            return $pdf->download('services.pdf');
+            $pdf = app('dompdf.wrapper')->loadView('profession.export.pdf', ['professions' => $professions]);
+            return $pdf->download('professions.pdf');
         }
     }
 }

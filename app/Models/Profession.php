@@ -3,21 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Service extends Model
+class Profession extends Model
 {
+    use HasFactory;
 
-    protected $keyType = 'string';
+    protected $primaryKey = 'id';
     public $incrementing = false;
+    protected $keyType = 'string';
+
+    protected $fillable = ['id', 'name', 'categorie'];
 
     protected static function boot()
     {
         parent::boot();
-        static::creating(function ($service) {
-            if (!$service->id) {
-                $service->id = (string) Str::uuid();
-            }
+        static::creating(function ($profession) {
+            $profession->id = (string) Str::uuid();
         });
     }
 
@@ -40,4 +44,7 @@ class Service extends Model
         return $query;
     }
     
+    
+    
 }
+

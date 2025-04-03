@@ -192,7 +192,7 @@
 											<span class="menu-bullet">
 												<span class="bullet bullet-dot"></span>
 											</span>
-											<span class="menu-title">Listes des roles</span>
+											<span class="menu-title">Rôle</span>
 										</a>
 									</div>
 									<div class="menu-item">
@@ -200,7 +200,7 @@
 											<span class="menu-bullet">
 												<span class="bullet bullet-dot"></span>
 											</span>
-											<span class="menu-title">Listes des permissions</span>
+											<span class="menu-title">Permissions</span>
 										</a>
 									</div>
 									<div class="menu-item">
@@ -208,7 +208,7 @@
 											<span class="menu-bullet">
 												<span class="bullet bullet-dot"></span>
 											</span>
-											<span class="menu-title">Listes des services</span>
+											<span class="menu-title">Services</span>
 										</a>
 									</div>
 
@@ -221,11 +221,19 @@
 										</a>
 									</div>
 									<div class="menu-item">
+										<a class="menu-link" href="{{route('profession.index')}}">
+											<span class="menu-bullet">
+												<span class="bullet bullet-dot"></span>
+											</span>
+											<span class="menu-title">Professions</span>
+										</a>
+									</div>
+									<div class="menu-item">
 										<a class="menu-link" href="{{route('admin.index')}}">
 											<span class="menu-bullet">
 												<span class="bullet bullet-dot"></span>
 											</span>
-											<span class="menu-title">Listes des administrateurs</span>
+											<span class="menu-title">Administrateurs</span>
 										</a>
 									</div>
 

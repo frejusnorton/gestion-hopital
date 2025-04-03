@@ -21,8 +21,8 @@
             <!--begin::Modal body-->
             <div class="modal-body px-5 my-7">
                 <!--begin::Form-->
-                <form id="kt_modal_add_admin_form" method="post" action="{{ 'admin.create' }}"  class="form fv-plugins-bootstrap5 fv-plugins-framework"
-                    enctype="multipart/form-data">
+                <form id="kt_modal_add_admin_form" method="post" action="{{ route('admin.create') }}"
+                    class="form fv-plugins-bootstrap5 fv-plugins-framework" enctype="multipart/form-data">
                     @csrf
                     <!--begin::Scroll-->
                     <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll"
@@ -33,7 +33,7 @@
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <!--begin::Label-->
-                            <label class="d-block fw-semibold fs-6 mb-5">Profil</label>
+                            <label class="d-block fw-semibold fs-6 mb-5">Photo de profile</label>
                             <style>
                                 .image-input-placeholder {
                                     background-image: url('/metronic8/demo8/assets/media/svg/files/blank-image.svg');
@@ -72,7 +72,7 @@
                                 <span
                                     class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                     data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
-                                    aria-label="Cancel avatar" data-bs-original-title="Cancel avatar"
+                                    aria-label="Supprimer le profil" data-bs-original-title="Supprimer le profil"
                                     data-kt-initialized="1">
                                     <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span
                                             class="path2"></span></i>
@@ -83,7 +83,7 @@
                                 <span
                                     class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
                                     data-kt-image-input-action="remove" data-bs-toggle="tooltip"
-                                    aria-label="Remove avatar" data-bs-original-title="Remove avatar"
+                                    aria-label="Supprimer le profil" data-bs-original-title="Supprimer le profil"
                                     data-kt-initialized="1">
                                     <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span
                                             class="path2"></span></i>
@@ -93,7 +93,7 @@
                             <!--end::Image input-->
 
                             <!--begin::Hint-->
-                            <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                            <div class="form-text">Type de fichier accepté: png, jpg, jpeg.</div>
                             <!--end::Hint-->
                         </div>
                         <!--end::Input group-->
@@ -104,7 +104,7 @@
                             <label class="required fw-semibold fs-6 mb-2">Nom</label>
                             <!--begin::Input-->
                             <input type="text" name="nom" class="form-control form-control-solid mb-3 mb-lg-0"
-                                placeholder="Ex : Doe">
+                                placeholder="Ex : Jonh">
                             <!--end::Input-->
                             <div
                                 class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
@@ -159,26 +159,25 @@
                         </div>
                         <!--end::Input group-->
 
-                    
-                        <div class="mb-5">
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
                             <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-5">Role</label>
-                            <div class="d-flex fv-row">
-                                <div class="form-check form-check-custom form-check-solid">
-                                    <input class="form-check-input me-3" name="user_role" type="radio" value="0"
-                                        id="kt_modal_update_role_option_0" checked="checked">
-                                    <label class="form-check-label" for="kt_modal_update_role_option_0">
-                                        <div class="fw-bold text-gray-800">Administrateur</div>
-                                        
-                                    </label>
-                                </div>
+                            <label class="required fw-semibold fs-6 mb-2">Sexe</label>
+                            <select name="sexe" class="form-select" data-control="select2" >
+                                <option value="" disabled selected>Choisissez le sexe</option>
+                                <option value="homme">Homme</option>
+                                <option value="femme">Femme</option>
+                            </select>
+                            <div
+                                class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                             </div>
                         </div>
                     </div>
                     <div class="text-center pt-10">
-                        <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                        <button type="submit" class="btn btn-primary">
                             <span class="indicator-label">
-                               Enregistrer
+                                Enregistrer
                             </span>
                             <span class="indicator-progress">
                                 Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>

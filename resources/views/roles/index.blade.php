@@ -1,6 +1,6 @@
 @extends('main.index')
 
-@section('title', 'Listes des roles')
+@section('title', 'Listes des rôle')
 
 @section('toolbar')
     <div class="toolbar d-flex align-items-stretch">
