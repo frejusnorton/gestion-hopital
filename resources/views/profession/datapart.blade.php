@@ -51,9 +51,10 @@
         @endforeach
     </tbody>
 </table>
-</div>
 <div class="mt-3">
     {{ $professions->links('pagination.custom') }}
 </div>
+</div>
+
 
 <div id="" class="row">

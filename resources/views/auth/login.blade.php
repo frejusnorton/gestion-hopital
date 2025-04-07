@@ -56,12 +56,11 @@
 
                         <!-- Nom d'utilisateur -->
                         <div class="fv-row mb-10">
-                            <label class="form-label fs-6 fw-bolder text-dark">Nom d'utilisateur</label>
+                            <label class="form-label fs-6 fw-bolder text-dark">Identifiant</label>
                             <input class="form-control form-control-lg form-control-solid" type="text"
-                                name="name" id="name" />
+                                name="identifiant" id="identifiant" placeholder="Ex: j.doe" />
                             <div class="text-danger mt-1 error-name"></div>
                         </div>
-
                         <!-- Mot de passe -->
                         <div class="fv-row mb-10" x-data="{ showPassword: false }">
                             <div class="d-flex flex-stack mb-2">

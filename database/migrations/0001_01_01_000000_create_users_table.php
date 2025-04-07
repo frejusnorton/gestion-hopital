@@ -18,11 +18,10 @@ return new class extends Migration
             $table->string('prenom');
             $table->string('identifiant');
             $table->string('matricule');
-            $table->uuid('role_id');
-            $table->string('poste');
-            $table->uuid('specialite_id');
+            $table->uuid('profession_id');
+            $table->uuid('service_id');
             $table->boolean('isadmin')->nullable()->default(false);
-            $table->enum('sexe', ['masculin', 'féminin']);
+            $table->enum('sexe', ['M', 'F']);
             $table->string('email')->unique()->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -37,7 +36,7 @@ return new class extends Migration
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->uuid('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('specialites', function (Blueprint $table) {
+        Schema::create('user_activities', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string(column: 'nom')->unique();
-            $table->string(column: 'statut')->default(true);
+            $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
+            $table->string('action'); 
+            $table->text('description')->nullable(); 
+            $table->string('ip_address')->nullable(); 
+            $table->string('user_agent')->nullable();
             $table->timestamps();
         });
+        
     }
 
     /**
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('specialites');
+        Schema::dropIfExists('user_activities');
     }
 };

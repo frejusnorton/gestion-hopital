@@ -1,7 +1,7 @@
 <script>
     $('.filter').on('keyup', function(e) {
         var search = $('#search').val();
-        var url = "{{ route('service.index') }}";
+        var url = "{{ route('admin.index') }}";
 
         $("div#datapart").html('<div class="col-xs-12 text-center" style="padding-top: 3em;">' +
             '<i class="fa fa-spin fa-spinner" style="color: lightgrey; font-size: 4em;"></i>' +
@@ -25,39 +25,48 @@
         });
     });
 
-    // AJOUT D'UN SERVICE
+    // AJOUT D'UN ADMIN
     $(document).ready(function() {
-        $("#ajout_role").submit(function(event) {
-            console.log('soumis');
+        $("#kt_modal_add_admin_form").submit(function(event) {
             event.preventDefault();
-
             let form = $(this);
-            let formData = form.serialize();
-            let loginBtn = $("#loginBtn");
-            let spinner = $("#loading-spinner");
+            let formData = new FormData(this);
+            let submitBtn = form.find('button[type="submit"]');
+            let indicatorLabel = submitBtn.find('.indicator-label');
+            let indicatorProgress = submitBtn.find('.indicator-progress');
 
-            loginBtn.prop("disabled", true);
-            spinner.removeClass("d-none");
+            // Désactiver le bouton et afficher le spinner
+            submitBtn.prop("disabled", true);
+            indicatorLabel.addClass("d-none");
+            indicatorProgress.removeClass("d-none");
 
-            $(".text-danger").text("");
             $.ajax({
                 url: form.attr("action"),
                 type: "POST",
                 data: formData,
+                processData: false,
+                contentType: false,
                 success: function(response) {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Succès",
-                        text: response.message,
-                        confirmButtonColor: "#28a745",
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
-                    });
-                },
+    $('#kt_modal_add_admin').modal('hide');
+    Swal.fire({
+        icon: "success",
+        title: "Succès",
+        html: `
+            <p>${response.message}</p>
+            <p><strong>Mot de passe temporaire ! Veuillez la changer après connexion :</strong> <span style="color: #28a745;">${response.password}</span></p>
+        `,
+        confirmButtonColor: "#28a745",
+        allowOutsideClick: false, 
+        allowEscapeKey: false,     
+        allowEnterKey: false      
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.reload();
+        }
+    });
+}, 
+
                 error: function(xhr) {
-                    console.log(xhr);
                     if (xhr.status === 500) {
                         Swal.fire({
                             icon: "error",
@@ -68,25 +77,31 @@
                     }
 
                     let errors = xhr.responseJSON?.errors;
-                    if (errors && errors.name) {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Erreur ",
-                            text: errors.name[0],
-                            confirmButtonColor: "#d33"
+                    if (errors) {
+                        Object.keys(errors).forEach((key) => {
+                            errors[key].forEach((errorMessage) => {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Erreur",
+                                    text: errorMessage,
+                                    confirmButtonColor: "#d33"
+                                });
+                            });
                         });
                     }
                 },
                 complete: function() {
-                    loginBtn.prop("disabled", false);
-                    spinner.addClass("d-none");
+                    // Réactiver le bouton et cacher le spinner
+                    submitBtn.prop("disabled", false);
+                    indicatorLabel.removeClass("d-none");
+                    indicatorProgress.addClass("d-none");
                 }
             });
         });
     });
 
 
-    // MODIFIER UN SERVICE
+    // MODIFIER UN ADMIN
     $(document).on("click", "#edit-role", function() {
         const name = $(this).data('name');
         $('#name').val(name);
@@ -159,7 +174,7 @@
         });
     });
 
-    // SUPPRIMER ROLE
+    // SUPPRIMER UN ADMIN
     $(document).on('click', '#supprimer_role', function() {
         const url = $(this).data('url');
         Swal.fire({

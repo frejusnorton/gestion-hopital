@@ -20,6 +20,7 @@ class Service extends Model
             }
         });
     }
+    protected $fillable = ['id', 'name']; 
 
     public static function filter($search = '', $statut = null)
     {
@@ -38,6 +39,11 @@ class Service extends Model
         }
     
         return $query;
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
     
 }

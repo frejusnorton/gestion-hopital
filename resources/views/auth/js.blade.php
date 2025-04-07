@@ -1,7 +1,13 @@
 <script>
-    $(document).ready(function() {
-        $("#loginForm").submit(function(event) {
-            console.log('soumis');
+    $(document).ready(function () {
+        // Ajout du token CSRF aux requêtes AJAX
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $("#loginForm").submit(function (event) {
             event.preventDefault();
 
             let form = $(this);
@@ -15,13 +21,17 @@
             $(".text-danger").text("");
 
             $.ajax({
-                url: form.attr("action"),
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                    window.location.href = "{{ route('home') }}";
-                },
-                error: function(xhr) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Succès",
+                    text: response.message,
+                    confirmButtonColor: "#28a745",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('home') }}";
+                    }
+                });
+                error: function (xhr) {
                     if (xhr.status === 500) {
                         Swal.fire({
                             icon: "error",
@@ -33,24 +43,19 @@
 
                     let errors = xhr.responseJSON?.errors;
                     if (errors) {
-                        if (errors.username) {
-                            $(".error-name").text(errors.email[0]);
-                        }
-                        if (errors.password) {
-                            $(".error-password").text(errors.password[0]);
-                        }
-                        if (errors.identifiants) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Erreur",
-                                text: errors.identifiants[
-                                0],
-                                confirmButtonColor: "#d33"
+                        Object.keys(errors).forEach((key) => {
+                            errors[key].forEach((errorMessage) => {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Erreur",
+                                    text: errorMessage,
+                                    confirmButtonColor: "#d33"
+                                });
                             });
-                        }
+                        });
                     }
                 },
-                complete: function() {
+                complete: function () {
                     loginBtn.prop("disabled", false);
                     spinner.addClass("d-none");
                 }

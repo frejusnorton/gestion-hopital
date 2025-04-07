@@ -65,9 +65,10 @@
         @endforeach
     </tbody>
 </table>
-</div>
 <div class="mt-3">
     {{ $permissions->links('pagination.custom') }}
 </div>
+</div>
+
 
 <div id="" class="row">

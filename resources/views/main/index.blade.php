@@ -47,7 +47,8 @@
 					<div class="aside-user d-flex align-items-sm-center justify-content-center py-5">
 						<!--begin::Symbol-->
 						<div class="symbol symbol-50px">
-							<img src="assets/media/avatars/150-26.jpg" alt="" />
+							<img src="{{ Auth::user()->profil ? asset('storage/' . Auth::user()->profil) : asset('assets/media/avatars/blank.png') }}"
+								alt="{{ Auth::user()->nom}} {{ Auth::user()->prenom}}" />
 						</div>
 						<!--end::Symbol-->
 						<!--begin::Wrapper-->
@@ -57,14 +58,18 @@
 								<!--begin::Info-->
 								<div class="flex-grow-1 me-2">
 									<!--begin::Username-->
-									<a href="#" class="text-white text-hover-primary fs-6 fw-bold">Paul Melone</a>
+									<a href="#"
+										class="text-white text-hover-primary fs-6 fw-bold">{{ Auth::user()->nom}}
+										{{ Auth::user()->prenom}}</a>
 									<!--end::Username-->
 									<!--begin::Description-->
-									<span class="text-gray-600 fw-bold d-block fs-8 mb-1">Python Dev</span>
+									<span
+										class="text-gray-600 fw-bold d-block fs-8 mb-1">{{ Auth::user()->profession->name ?? ""}}
+									</span>
 									<!--end::Description-->
 									<!--begin::Label-->
 									<div class="d-flex align-items-center text-success fs-9">
-										<span class="bullet bullet-dot bg-success me-1"></span>online
+										<span class="bullet bullet-dot bg-success me-1"></span>en ligne
 									</div>
 									<!--end::Label-->
 								</div>
@@ -97,17 +102,18 @@
 											<div class="menu-content d-flex align-items-center px-3">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px me-5">
-													<img alt="Logo" src="assets/media/avatars/150-26.jpg" />
+													<img src="{{ Auth::user()->profil ? asset('storage/' . Auth::user()->profil) : asset('assets/media/avatars/blank.png') }}"
+														alt="{{ Auth::user()->nom}} {{ Auth::user()->prenom}}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Username-->
 												<div class="d-flex flex-column">
-													<div class="fw-bolder d-flex align-items-center fs-5">Max Smith
-														<span
-															class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Pro</span>
+													<div class="fw-bolder d-flex align-items-center fs-5">
+														{{ Auth::user()->nom}} {{ Auth::user()->prenom}}
+
 													</div>
 													<a href="#"
-														class="fw-bold text-muted text-hover-primary fs-7">max@kt.com</a>
+														class="fw-bold text-muted text-hover-primary fs-7">{{ Auth::user()->email}}</a>
 												</div>
 												<!--end::Username-->
 											</div>
@@ -116,28 +122,27 @@
 										<!--begin::Menu separator-->
 										<div class="separator my-2"></div>
 										<!--end::Menu separator-->
-
+										<div class="menu-item px-5">
+											<a href="{{ route('profil.index', ['user' => Auth::user()->id]) }}" class="menu-link px-5">Mon compte</a>
+										</div>
 										<!--begin::Menu separator-->
 										<div class="separator my-2"></div>
 										<!--end::Menu separator-->
 										<!--begin::Menu item-->
-										<div class="menu-item px-5" data-kt-menu-trigger="hover"
+										<div class="menu-item px-5 mb-5" data-kt-menu-trigger="hover"
 											data-kt-menu-placement="right-start">
 											<a href="#" class="menu-link px-5">
 												<span class="menu-title position-relative">Langue
 													<span
-														class="fs-8 rounded bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">French
+														class="fs-8 rounded bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">Français
 														<img class="w-15px h-15px rounded-1 ms-2"
 															src="assets/media/flags/france.svg" alt="" /></span></span>
 											</a>
 
 										</div>
-										<!--end::Menu item-->
 
-										<!--begin::Menu item-->
 										<div class="menu-item px-5">
-											<a href="../../demo8/dist/authentication/flows/basic/sign-in.html"
-												class="menu-link px-5">Se déconnecter</a>
+											<button id="deconnexion" class="btn btn-light-danger px-5">Se déconnecter</button>
 										</div>
 										<!--end::Menu item-->
 										<!--begin::Menu separator-->
@@ -186,7 +191,6 @@
 									<span class="menu-arrow"></span>
 								</span>
 								<div class="menu-sub menu-sub-accordion">
-
 									<div class="menu-item">
 										<a class="menu-link" href="{{route('roles.index')}}">
 											<span class="menu-bullet">
@@ -213,14 +217,6 @@
 									</div>
 
 									<div class="menu-item">
-										<a class="menu-link" href="{{route('specialite-medecin.index')}}">
-											<span class="menu-bullet">
-												<span class="bullet bullet-dot"></span>
-											</span>
-											<span class="menu-title">Spécialités médécin</span>
-										</a>
-									</div>
-									<div class="menu-item">
 										<a class="menu-link" href="{{route('profession.index')}}">
 											<span class="menu-bullet">
 												<span class="bullet bullet-dot"></span>
@@ -240,6 +236,8 @@
 
 								</div>
 							</div>
+
+
 							<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 								<span class="menu-link">
 									<span class="menu-icon">
@@ -310,7 +308,40 @@
 								</div>
 							</div>
 
-
+							<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+								<span class="menu-link">
+									<span class="menu-icon">
+										<!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm002.svg-->
+										<span class="svg-icon svg-icon-2">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+												viewBox="0 0 24 24" fill="none">
+												<path
+													d="M21 10H13V11C13 11.6 12.6 12 12 12C11.4 12 11 11.6 11 11V10H3C2.4 10 2 10.4 2 11V13H22V11C22 10.4 21.6 10 21 10Z"
+													fill="black" />
+												<path opacity="0.3"
+													d="M12 12C11.4 12 11 11.6 11 11V3C11 2.4 11.4 2 12 2C12.6 2 13 2.4 13 3V11C13 11.6 12.6 12 12 12Z"
+													fill="black" />
+												<path opacity="0.3"
+													d="M18.1 21H5.9C5.4 21 4.9 20.6 4.8 20.1L3 13H21L19.2 20.1C19.1 20.6 18.6 21 18.1 21ZM13 18V15C13 14.4 12.6 14 12 14C11.4 14 11 14.4 11 15V18C11 18.6 11.4 19 12 19C12.6 19 13 18.6 13 18ZM17 18V15C17 14.4 16.6 14 16 14C15.4 14 15 14.4 15 15V18C15 18.6 15.4 19 16 19C16.6 19 17 18.6 17 18ZM9 18V15C9 14.4 8.6 14 8 14C7.4 14 7 14.4 7 15V18C7 18.6 7.4 19 8 19C8.6 19 9 18.6 9 18Z"
+													fill="black" />
+											</svg>
+										</span>
+										<!--end::Svg Icon-->
+									</span>
+									<span class="menu-title">Suivi des utilisateurs</span>
+									<span class="menu-arrow"></span>
+								</span>
+								<div class="menu-sub menu-sub-accordion">
+									<div class="menu-item">
+										<a class="menu-link" href="{{ route('patient.index') }}">
+											<span class="menu-bullet">
+												<span class="bullet bullet-dot"></span>
+											</span>
+											<span class="menu-title">Activité utilisateur</span>
+										</a>
+									</div>
+								</div>
+							</div>
 
 							<div class="menu-item">
 								<span class="menu-link">
@@ -492,7 +523,7 @@
 	<script src="assets/js/custom/apps/chat/chat.js"></script>
 	<script src="assets/js/custom/modals/create-app.js"></script>
 	<script src="assets/js/custom/modals/upgrade-plan.js"></script>
-
+    @include('main.js')
 	@yield('scripts')
 </body>
 <!--end::Body-->

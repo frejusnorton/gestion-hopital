@@ -18,22 +18,17 @@ class ProfessionController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search', '');
-        $query = Profession::filter($search);
-
-        $professions = $query->paginate(10);
+        $professions = Profession::filter($request->search)->paginate(10);
 
         if ($request->ajax()) {
             return view('profession.datapart', [
                 'professions' => $professions
             ]);
         }
-
         return view('profession.index', [
             'professions' => $professions
         ]);
     }
-
 
     public function create(Request $request)
     {

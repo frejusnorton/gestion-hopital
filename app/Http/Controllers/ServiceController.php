@@ -12,20 +12,15 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Validation\ValidationException;
 
 class ServiceController extends Controller
-{
-    public function index(Request $request)
+{    public function index(Request $request)
     {
-        $search = $request->input('search', '');
-        $query = Service::filter($search);
-
-        $services = $query->paginate(10);
-
+        $services = Service::filter($request->search)->paginate(10);
+        
         if ($request->ajax()) {
             return view('service.datapart', [
                 'services' => $services
             ]);
         }
-
         return view('service.index', [
             'services' => $services
         ]);
@@ -82,13 +77,13 @@ class ServiceController extends Controller
         ], [
             'name.required' => 'Le champ nom est obligatoire.',
             'name.string' => 'Le champ nom doit être une chaîne de caractères.',
-            'name.unique' => 'Ce nom de permission existe déjà.',
+            'name.unique' => 'Ce service existe déjà.',
         ]);
 
         $service->update(['name' => strtoupper($request->name)]);
 
         return response()->json([
-            'message' => 'Permission mise à jour avec succès.',
+            'message' => 'Service mise à jour avec succès.',
             'success' => true,
         ], 200);
     }

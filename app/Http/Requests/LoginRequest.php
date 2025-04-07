@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -19,26 +20,28 @@ class LoginRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(Request $request): array
     {
+
         return [
-            'name' => 'required',
+            'identifiant' => 'required',
             'password' => [
                 'required',
                 'string',
                 'min:8',
-                'regex:/^(?=.*[A-Z])(?=.*\d).+$/',
+                'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/', 
             ],
         ];
     }
-
+    
     public function messages(): array
     {
         return [
-            'name.required' => "Le nom d'utilisateur est obligatoire",
+            'identifiant.required' => "Votre identifiant est obligatoire",
             'password.required' => 'Le mot de passe est obligatoire.',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
-            'password.regex' => 'Le mot de passe doit contenir au moins une majuscule et un chiffre.',
+            'password.regex' => 'Le mot de passe doit contenir au moins une majuscule, un chiffre, et un caractère spécial.',
         ];
     }
+    
 }

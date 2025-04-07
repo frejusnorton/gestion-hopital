@@ -28,7 +28,7 @@
     // AJOUT D'UNE PERMISSION
     $(document).ready(function () {
         $("#kt_modal_add_permission_form").submit(function (event) {
-            console.log('soumis');
+         
             event.preventDefault();
 
             let form = $(this);
